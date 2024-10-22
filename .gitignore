@@ -1,0 +1,8 @@
+/venv/
+/output/
+/ppocr_img/
+/.vscode/
+/__pycache__/
+/build/
+/dist/
+tk.spec
