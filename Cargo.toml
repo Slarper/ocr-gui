@@ -1,0 +1,9 @@
+[package]
+name = "ocr-gui"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+image = { version = "0.25.4", features = ["png"] }
+pdf2image = "0.1.2"
+prgrs = "0.6.4"
