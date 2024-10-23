@@ -31,16 +31,34 @@ def text_only(result):
 
     Warning: A paragraph will be separeted into multiple lines.
     '''
-    res = result[0]
-    text_list = [line[1][0] for line in res]
+
+    # result will be [None] when there is no text detected in the image
+    res = result[0] if result[0] is not None else []
+    try:
+        text_list = [line[1][0] for line in res]
+
+    except Exception as e:
+        print("Caught an error:", e)
+        from pprint import pprint
+        pprint(result)
+
     return text_list
 
 def boxes_only(result):
     '''
     
     '''
-    res = result[0]
-    boxes_list = [line[0] for line in res]
+    # result will be [None] when there is no text detected in the image
+    res = result[0] if result[0] is not None else []
+
+    try:
+        boxes_list = [line[0] for line in res]
+
+    except Exception as e:
+        print("Caught an error:", e)
+        from pprint import pprint
+        pprint(result)
+
     return boxes_list
 
 
