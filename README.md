@@ -3,6 +3,13 @@
  It reads the image from clipboard, so another screenshot tool such as Snipaste is required.
 
 
+# Install Dependecies
+
+inside or outside a virtual environment:
+```
+pip install -r requirements.
+```
+
 # Run
 
 ```
