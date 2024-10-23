@@ -7,7 +7,7 @@
 
 inside or outside a virtual environment:
 ```
-pip install -r requirements.
+pip install -r requirements.txt
 ```
 
 # Run
