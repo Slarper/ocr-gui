@@ -1,11 +1,7 @@
 from reportlab.pdfgen import canvas
-from reportlab.lib.units import mm, inch
-from reportlab.platypus import Paragraph, Frame, KeepInFrame
+from reportlab.lib.units import mm
 from PIL import Image
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib.styles import ParagraphStyle
 from ocr_lib import *
-from reportlab.lib.enums import TA_CENTER
 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -14,14 +10,18 @@ from reportlab.lib import colors
 pdfmetrics.registerFont(TTFont("consolas", "Consolas.ttf"))
 pdfmetrics.registerFont(TTFont("times_new_roman", "Times New Roman.ttf"))
 pdfmetrics.registerFont(TTFont("jetbrainsmono", "JetBrainsMono-VariableFont_wght.ttf"))
+from reportlab.pdfbase.pdfmetrics import stringWidth
 
 
-def draw_page(im, c: canvas.Canvas):
+def draw_page(im, c: canvas.Canvas, **kargs):
     """
     im : image_file_path
     c : reportlab.pdfgen.canvas.Canvas
     Only support portrait A4 size
     """
+
+    # if there is debug =True in kargs,
+    debug_mode = kargs.get("debug", False)
 
     c.drawImage(im, 0, 0, 210 * mm, 297 * mm)
 
@@ -37,48 +37,33 @@ def draw_page(im, c: canvas.Canvas):
         x, y, width, height = box_to_rect_a4(
             box, img_width, img_height
         )  # Unpack box coordinates
-        # c.rect(x, y, width, height, fill=0)  # Draw bounding box
 
-        # Draw the text
-        # 1 inch is roughly equal to 72 points.
-        consolas_factor = 1.82
-        times_new_roman_factor = 2.5
-        jetbrainsmono_factor = 1.67
-        font_size = width / len(txt) * jetbrainsmono_factor
-        # Set the fill color with transparency (RGBA)
-        c.setFillColor(colors.Color(1, 0, 0, 0.0))  # Red color with 50% transparency
-        # c.setFillColor(colors.Color(1, 0, 0, 0.5))  # Debug
-        c.setFont("jetbrainsmono", font_size)  # Set the font and size
+        if debug_mode:
+            c.rect(x, y, width, height, fill=0)  # Draw bounding box
 
-        x_offset = 2.0
-        y_offset = 1 * mm
-        c.drawString(x + x_offset, y + y_offset, txt)  # Draw the text
+        if not debug_mode:
+            c.setFillColor(colors.Color(1, 0, 0, 0.0))
+        else:
+            c.setFillColor(colors.Color(1, 0, 0, 0.7))  # Debug
+        font_size = adjust_font_size(txt, "times_new_roman", width)
+        c.setFont("times_new_roman", font_size)  # Set the font and size
 
-        # frm = Frame(x, y, width, height, showBoundary=1,
-        #             leftPadding = 0, rightPadding = 0, topPadding = 0, bottomPadding = 0)
-        # txt_para = Paragraph(
-        #     txt,
-        #     ParagraphStyle(
-        #         name="",
-        #         fontName="consolas",
-        #         fontSize=font_size,
-        #         textColor="black",
-        #         # alignment=TA_CENTER,
-        #     ),
-        # )
-        # frm.addFromList([txt_para], c)
+
+        # y + 1mm to centralize the txt vertically
+        c.drawString(x, y + 1*mm, txt)  # Draw the text
 
     c.showPage()
 
 
-def calculate_font_size(width, height):
-    """
-    Calculate the font size based on the given width and height.
-    This is a simple heuristic. You can adjust the scaling factors as needed.
-    """
-    # Use a scaling factor to calculate font size
-    inch_to_pt = 72 / inch
-    font_size = min(width * 2.0, height) * inch_to_pt
+def adjust_font_size(
+    text,
+    font_name,
+    width,
+):
+    font_size = 18.0
+
+    text_width = stringWidth(text, font_name, font_size)
+    font_size = font_size * (width / text_width)
     return font_size
 
 
