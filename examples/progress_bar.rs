@@ -1,12 +1,9 @@
-use prgrs::{Prgrs, writeln};
+use prgrs::Prgrs;
 use std::{thread, time};
 
 fn main() {
-    for i in Prgrs::new((0..1000).into_iter().enumerate(), 1000) {
+    for _ in Prgrs::new((0..1000).enumerate(), 1000) {
         thread::sleep(time::Duration::from_millis(10));
-        // if i % 10 == 0{
-            // let str = format!("{}", i);
-            // writeln(&str).expect("prgrs::writeln: Some Problem occured while trying to print");
-        // }
+            
     }
 }
