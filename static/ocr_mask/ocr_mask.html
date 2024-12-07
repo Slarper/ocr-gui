@@ -17,6 +17,14 @@
             <button type="button" onclick="uploadImage2()">Upload</button>
             <button type="button" onclick="clipImage()">ClipBoard</button>
         </form>
+        <!-- add a one-line text input -->
+        <!-- 2 elements on the same line -->
+        <div style="display: flex;">
+            <div>language:</div>
+            <input type="text" id="ocr_language" placeholder="">
+        </div>
+        <div>available: ['ch', 'en', 'korean', 'japan', 'chinese_cht', 'ta', 'te', 'ka', 'latin', 'arabic', 'cyrillic', 'devanagari']</div>
+        
         <h2>Image Preview:</h2>
         <div id="preview">
             <img id="previewImage" src="" alt="Image Preview" width="1000">

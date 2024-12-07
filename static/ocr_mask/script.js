@@ -27,6 +27,10 @@ document.getElementById('imageUpload').addEventListener('change', async function
 ocrImage = async (base64Image) => {
     // console.log(base64Image);
 
+    // get string from id: ocr_language, which is a input node
+    const lang = document.getElementById('ocr_language').value;
+    console.log(lang);
+
     const response = await fetch('/ocr/full', {
         method: 'POST',
         headers: {
@@ -34,6 +38,7 @@ ocrImage = async (base64Image) => {
         },
         body: JSON.stringify({
             image: base64Image,
+            lang: lang
         }),
     });
     const data = await response.json();
@@ -215,6 +220,10 @@ async function getClipboardImageAsBase64() {
 clipImage = async () => {
 
     const base64Image = await getClipboardImageAsBase64();
+    if (!base64Image) {
+        alert('No image found in clipboard.');
+        return;
+    }
     // console.log(base64Image);
     ocrImage(base64Image);
 }

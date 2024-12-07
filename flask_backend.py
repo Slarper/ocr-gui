@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    return send_from_directory('static', 'index.html')
+    return send_from_directory('static', 'ocr_mask/ocr_mask.html')
 
 @app.route("/ocr/clipboard")
 def ocr_clipboard():
@@ -37,13 +37,14 @@ def ocr_full():
     print("data:\n")
     print(data)
     base64_data = data['image']
+    lang = data['lang']
     # Remove the base64 prefix if it exists (for example, 'data:image/png;base64,')
     if base64_data.startswith('data:image'):
         base64_data = base64_data.split(',')[1]
     im = Image.open(BytesIO(base64.b64decode(base64_data)))
     im_width=im.size[0]
     im_height=im.size[1]
-    results = ocr(from_pil(im))
+    results = ocr(from_pil(im), lang = lang)
     result = results[0]
     # result is a list of [[p1,p2,p3,p4],(text, prob)]
     # p1,p2,p3,p4 are the coordinates of the box
