@@ -71,3 +71,34 @@ if __name__ == "__main__":
     pprint(ocr(from_pil(im)), indent=4)
     p = text_only(ocr(from_pil(im)))
     print(p)
+
+def box_to_rect_ratio(box, max_width, max_height):
+    """
+    Convert a polygon defined by 4 vertices to a rectangle format.
+
+    box : [[x1, y1], [x2, y2], [x3, y3], [x4, y4]]
+    Returns: (x, y, width, height)
+    x, y, width, height are ratios
+    """
+
+    # should flip y axis due to different coordinate system
+    # between image and pdf
+    x_coords = [point[0] for point in box]
+    y_coords = [max_height - point[1] for point in box]
+
+    x_min = min(x_coords)
+    x_max = max(x_coords)
+    y_min = min(y_coords)
+    y_max = max(y_coords)
+
+    width = x_max - x_min
+    height = y_max - y_min
+
+    in_ratio = (
+        x_min / max_width,
+        y_min / max_height,
+        width / max_width,
+        height / max_height,
+    )
+
+    return in_ratio

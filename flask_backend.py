@@ -31,6 +31,43 @@ def ocr_clipboard():
         "image": im_box
     }
 
+@app.route("/ocr/full", methods=['POST'])
+def ocr_full():
+    data = request.get_json()
+    print("data:\n")
+    print(data)
+    base64_data = data['image']
+    # Remove the base64 prefix if it exists (for example, 'data:image/png;base64,')
+    if base64_data.startswith('data:image'):
+        base64_data = base64_data.split(',')[1]
+    im = Image.open(BytesIO(base64.b64decode(base64_data)))
+    im_width=im.size[0]
+    im_height=im.size[1]
+    results = ocr(from_pil(im))
+    result = results[0]
+    # result is a list of [[p1,p2,p3,p4],(text, prob)]
+    # p1,p2,p3,p4 are the coordinates of the box
+    # with the form of [x,y]
+    l =  []
+    for box, (text, prob) in result:
+        x,y,w,h = box_to_rect_ratio(box,im_width, im_height)
+        l.append({
+            "x": x,
+            "y": y,
+            "w": w,
+            "h": h,
+            "text": text
+        })
+
+    print(l)
+
+    # response json
+    # return result
+    return {
+        "l": l
+    }
+        
+
 
 
 
