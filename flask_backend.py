@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    return send_from_directory('static', 'ocr_mask/ocr_mask.html')
+    return send_from_directory('static', 'index.html')
 
 @app.route("/ocr/clipboard")
 def ocr_clipboard():
@@ -50,6 +50,11 @@ def ocr_full():
     # p1,p2,p3,p4 are the coordinates of the box
     # with the form of [x,y]
     l =  []
+    if result is None:
+        print("No text detected")
+        return {
+            "l": []
+        }
     for box, (text, prob) in result:
         x,y,w,h = box_to_rect_ratio(box,im_width, im_height)
         l.append({

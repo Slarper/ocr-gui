@@ -28,8 +28,17 @@ ocrImage = async (base64Image) => {
     // console.log(base64Image);
 
     // get string from id: ocr_language, which is a input node
-    const lang = document.getElementById('ocr_language').value;
+    let lang = document.getElementById('ocr_language').value;
+    // 
+    if (!lang) {
+        lang = 'ch'
+    }
     console.log(lang);
+    let lang_set = ['ch', 'en', 'korean', 'japan', 'chinese_cht', 'ta', 'te', 'ka', 'latin', 'arabic', 'cyrillic', 'devanagari'];
+    if (!lang_set.includes(lang)) {
+        alert('Please select a valid language.');
+        return;
+    }
 
     const response = await fetch('/ocr/full', {
         method: 'POST',
@@ -45,7 +54,7 @@ ocrImage = async (base64Image) => {
     console.log(data);
 
     const l = data.l;
-    const l1 = l[1];
+    const l1 = l[0];
     console.log(l1.x);
     console.log(l1.y);
     console.log(l1.w);
