@@ -6,7 +6,7 @@ pipe = pipeline("translation", model="Helsinki-NLP/opus-mt-en-zh")
 
 en = """
 China has expanded its share of global commercial services exports from 3 percent
-in 200s to 5.4 percent in 2022, according to a report jointly released by
+in 2000s to 5.4 percent in 2022, according to a report jointly released by
 the World Bank Group and World Trade Organization earlier this week.
 """
 

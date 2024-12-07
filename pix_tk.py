@@ -15,14 +15,14 @@ frm = ttk.Frame(root, padding=10)
 frm.grid()
 
 text_widget = Text(frm)
-text_widget.grid(column=1, row=1, rowspan = 2)
+text_widget.grid(column=1, row=1, columnspan = 2)
 # Disable the widget to prevent editing
 # text_widget.config(state=DISABLED)
 
 
 label_widget = Label(frm)
 # label_widget.grid(column=1, row=0, columnspan=1)
-label_widget.grid(column=1, row=0)
+label_widget.grid(column=0, row=1)
 
 
 check_var = tk.BooleanVar()
@@ -69,7 +69,7 @@ def update_3():
 
 # Hello World label
 ttk.Button(frm, text="Click me", command=update_content).grid(column=0, row=0)
-ttk.Button(frm, text="Copy as block", command=update_2).grid(column=0, row=1)
-ttk.Button(frm, text="Copy as snippet", command=update_3).grid(column=0, row=2)
+ttk.Button(frm, text="Copy as block", command=update_2).grid(column=1, row=0)
+ttk.Button(frm, text="Copy as snippet", command=update_3).grid(column=2, row=0)
 
 root.mainloop()
