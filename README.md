@@ -33,3 +33,13 @@ pyinstaller --noconfirm --onefile --windowed --hidden-import "imghdr" --hidden-i
     2. run `auto-py-to-exe`
 
     3. choose the `apte.json` in Settings > Import Config From Json File
+
+# Web Update
+
+Since AI models are large, maybe a better way to hold the application is in the form of web application.
+
+I have made a web-equivalent of tk.py. check it by
+
+```sh
+python flask_backend.py
+```
