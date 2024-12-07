@@ -1,4 +1,6 @@
-from PIL import ImageDraw
+import base64
+from io import BytesIO
+from PIL import ImageDraw, Image
 
 
 def draw_polygon(im, vertices):
@@ -76,3 +78,25 @@ def resize_to_fit(image, target_width, target_height):
     resized_image = image.resize((new_width, new_height))
 
     return resized_image
+
+def pil_image_to_base64_url(image: Image, image_format: str = 'PNG') -> str:
+    """
+    Convert a PIL Image object to a base64-encoded data URI string.
+    
+    :param image: PIL Image object.
+    :param image_format: The format to save the image (default is PNG).
+    :return: A base64-encoded data URI string for the image.
+    """
+    # Create a BytesIO buffer to hold the image data
+    buffered = BytesIO()
+
+    # Save the image to the buffer in the specified format (e.g., PNG or JPEG)
+    image.save(buffered, format=image_format)
+
+    # Get the base64-encoded bytes
+    base64_image = base64.b64encode(buffered.getvalue()).decode('utf-8')
+
+    # Construct the data URI (for example, for PNG images)
+    data_uri = f"data:image/{image_format.lower()};base64,{base64_image}"
+
+    return data_uri
