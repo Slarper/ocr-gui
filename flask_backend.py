@@ -65,36 +65,4 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
-# # get image from json, then ocr it
-# @app.route("/ocr", methods=['POST'])
-# def ocr_req():
-#     # get image from json
-#     # image is base64 encoded
-#     # decode it to PIL image
-#     # then ocr it
-#     data = request.get_json()
-#     print(data["image"][:100])
-#     base64_data = data['image']
-#     # Remove the base64 prefix if it exists (for example, 'data:image/png;base64,')
-#     if base64_data.startswith('data:image'):
-#         base64_data = base64_data.split(',')[1]
-#     im = Image.open(BytesIO(base64.b64decode(base64_data)))
-#     result = ocr(from_pil(im))
-#     print(result)
-#     lines = text_only(result)
-#     text = "\n".join(lines)
-#     boxes = boxes_only(result)
-#     im_box = draw_polygons(im, boxes)
-#     im_box = resize_to_fit(im_box, 720, 720 / 1.33)
-#     # save text and image into temp/ for debugging
-#     im_box.save("temp/ocr_result.png")
-
-
-
-#     return {
-#         "text": text,
-#         "image": pil_image_to_base64_url(im_box)
-#     }
-
-
 
