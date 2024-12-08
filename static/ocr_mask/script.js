@@ -49,6 +49,11 @@ ocrImage = async (base64Image) => {
     console.log(data);
 
     const l = data.l;
+    // if l is empty [], alert no text found
+    if (l.length == 0) {
+        alert('No text found in the image.');
+        return
+    }
     const l1 = l[0];
     console.log(l1.x);
     console.log(l1.y);
