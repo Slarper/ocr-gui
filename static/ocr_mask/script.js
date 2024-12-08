@@ -130,6 +130,7 @@ ocrImage = async (base64Image) => {
         textElement.setAttribute('font-size', 1);
         textElement.setAttribute('fill', 'transparent');
         textElement.setAttribute('dominant-baseline', `middle`)
+        textElement.setAttribute('id', `ocr_text`)
         // put text inside
         textElement.innerHTML = text;
 
@@ -150,11 +151,27 @@ ocrImage = async (base64Image) => {
         let text_y = middle;
         textElement.setAttribute('y', text_y);
 
+        textElement.addEventListener('dblclick', function () {
+            const text = this.textContent;
+            copyTextToClipboard(text);
+        });
+
     })
 
 
 
 }
+function copyTextToClipboard(text) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+    // alert("Text copied to clipboard!");
+}
+
+
 
 uploadImage2 = async () => {
     const fileInput = document.getElementById('imageUpload');
