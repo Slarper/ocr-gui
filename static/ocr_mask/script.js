@@ -19,6 +19,9 @@ document.getElementById('imageUpload').addEventListener('change', async function
     }
 });
 
+
+
+
 ocrImage = async (base64Image) => {
     // console.log(base64Image);
 
@@ -201,54 +204,46 @@ uploadImage2 = async () => {
     const base64Image = e.target.result;
     ocrImage(base64Image);
 }
-// Function to read image from clipboard and convert to Base64
-async function getClipboardImageAsBase64() {
-    // let status = await navigator.permissions.query({ name: "clipboard-read" });
-    // console.log(status)
-    // Wait for clipboard data
-    const clipboardItems = await navigator.clipboard.read();
 
-    for (const item of clipboardItems) {
-        console.log(item)
-        for (const type of item.types) {
-            console.log(type)
-            if (type.startsWith('image/')) {
-                // Extract the image as a Blob
-                const imageBlob = await item.getType(type);
 
-                // Convert Blob to Base64 using FileReader
-                const reader = new FileReader();
-                reader.readAsDataURL(imageBlob);
-                const read_image = () => {
-                    return new Promise(res => {
-                        reader.onload = async function (e) {
-                            res(e);
-                        };
-                    })
-                }
 
-                let e = await read_image();
-                const base64Image = e.target.result;
-                // console.log(base64Image);
-                return base64Image;
+document.addEventListener('paste', async function (event) {
+    // Check if clipboard contains image data
+    const clipboardItems = event.clipboardData.items;
+    for (let i = 0; i < clipboardItems.length; i++) {
+        const item = clipboardItems[i];
 
+        // Check for image MIME type
+        if (item.type.indexOf('image') === 0) {
+            const file = item.getAsFile();
+            const reader = new FileReader();
+
+            const read_image = () => {
+                return new Promise(res => {
+                    reader.onload = async function (e) {
+                        res(e);
+                    };
+                })
             }
+            reader.readAsDataURL(file);
+
+            let e = await read_image();
+
+            // Read the image file as a data URL
+            let base64Image = e.target.result;
+
+            // show preview
+            document.getElementById('preview').style.display = 'block';
+            document.getElementById('previewImage').src = base64Image;
+            document.getElementById('svg').style.display = 'none';
+
+
+            ocrImage(base64Image);
+
+
         }
     }
-}
-
-
-
-clipImage = async () => {
-
-    const base64Image = await getClipboardImageAsBase64();
-    if (!base64Image) {
-        alert('No image found in clipboard.');
-        return;
-    }
-    // console.log(base64Image);
-    ocrImage(base64Image);
-}
+});
 
 // uploadImage = async () => {
 //     const fileInput = document.getElementById('imageUpload');
