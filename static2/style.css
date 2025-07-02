@@ -1,0 +1,26 @@
+/* Style for the body to create a container for the content */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    /* Center the column horizontally */
+    align-items: flex-start;
+    /* Align the content at the top */
+    background-color: #f0f0f0;
+}
+
+/* Container for the column */
+.column {
+    display: flex;
+    flex-direction: column;
+    /* Make the content stack in a column */
+    gap: 20px;
+    /* Optional, adds space between items */
+    padding: 20px;
+    width: 1100;
+    /* Set a fixed width for the column */
+    background-color: #3498db;
+    color: white;
+    border-radius: 5px;
+}

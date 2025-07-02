@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Display</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        img {
+            max-width: 80%;
+            max-height: 80vh;
+            border: 1px solid #ccc;
+        }
+
+        .instructions {
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <img id="displayed-image" src="{{ url_for('static', filename=image) }}" alt="Display Image">
+    <p class="instructions">Press Ctrl+V to change the image</p>
+
+    <script>
+        document.addEventListener('keydown', function (event) {
+            // Check for Ctrl+V (Windows/Linux) or Command+V (Mac)
+            if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+                event.preventDefault(); // Prevent default paste behavior
+
+                // Send request to server to change image
+                fetch('/change_image', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                    .then(response => response.text())
+                    .then(newImage => {
+                        // Update the image source
+                        document.getElementById('displayed-image').src =
+                            "{{ url_for('static', filename='') }}" + newImage;
+                    });
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>
